@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Super Pet Feeder</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+    
+    <!-- Tailwind CSS for quick styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+    <div id="app" class="min-h-screen bg-gradient-to-br from-purple-400 via-pink-400 to-red-400">
+        
+        <!-- Loading main Screen -->
+        <div id="loading-screen" class="fixed inset-0 flex items-center justify-center bg-purple-600 z-50">
+            <div class="text-center text-white">
+                <div class="text-8xl mb-4 animate-bounce">🎮</div>
+                <h1 class="text-4xl font-bold mb-2">Super Pet Feeder</h1>
+                <div class="loading-spinner w-8 h-8 border-4 border-white border-t-transparent rounded-full mx-auto"></div>
+            </div>
+        </div>
+
+        <!-- Main Menu -->
+        <div id="main-menu" class="flex flex-col items-center p-6 min-h-screen" style="display: none;">
+            <div class="text-center mb-8 animate-bounce">
+                <h1 class="text-6xl font-bold text-white mb-4 drop-shadow-lg">
+                    🎮 SUPER PET FEEDER 🎮
+                </h1>
+                <p class="text-xl text-white opacity-90">The Ultimate Feeding Adventure!</p>
+            </div>
+
+            <!-- Offering Pet options for Selection -->
+            <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl p-6 mb-6 shadow-2xl">
+                <h2 class="text-2xl font-bold text-white mb-4 text-center">Choose Your Pet</h2>
+                <div id="pet-selection" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <!-- Available Pets as buttons present by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Offering different game modes for more fun:) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <button id="classic-mode" class="game-button bg-green-500 hover:bg-green-600 text-white p-6 rounded-2xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-xl">
+                    <div class="text-3xl mb-2">🌟</div>
+                    <div>Classic Mode</div>
+                    <div class="text-sm opacity-90">Standard gameplay</div>
+                </button>
+                
+                <button id="challenge-mode" class="game-button bg-red-500 hover:bg-red-600 text-white p-6 rounded-2xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-xl">
+                    <div class="text-3xl mb-2">🔥</div>
+                    <div>Challenge Mode</div>
+                    <div class="text-sm opacity-90">Harder & faster!</div>
+                </button>
+                
+                <button id="zen-mode" class="game-button bg-blue-500 hover:bg-blue-600 text-white p-6 rounded-2xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-xl">
+                    <div class="text-3xl mb-2">🧘</div>
+                    <div>Zen Mode</div>
+                    <div class="text-sm opacity-90">Relaxing pace</div>
+                </button>
+            </div>
+
+            <div class="text-white text-center opacity-80">
+                <p class="mb-2">🏆 High Score: <span id="high-score-display">0</span></p>
+                <p>🍎 Total Treats Fed: <span id="total-treats-display">0</span></p>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="flex flex-col items-center p-6 bg-gradient-to-br from-sky-200 via-purple-200 to-pink-200 min-h-screen" style="display: none;">
+            
+            <!-- Game Header -->
+            <div class="flex justify-between items-center w-full max-w-md mb-4">
+                <button id="back-to-menu" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors">
+                    ← Menu
+                </button>
+                <h1 id="game-title" class="text-2xl font-bold text-purple-800">Feed Kitty!</h1>
+            </div>
+            
+            <!-- Game Stats -->
+            <div class="grid grid-cols-4 gap-2 mb-4 text-sm font-semibold">
+                <div class="bg-white px-3 py-2 rounded-lg shadow-md text-center">
+                    <div id="score" class="text-blue-600 text-lg">0</div>
+                    <div class="text-xs">Score</div>
+                </div>
+                <div class="bg-white px-3 py-2 rounded-lg shadow-md text-center">
+                    <div id="happiness" class="text-lg text-green-600">100%</div>
+                    <div class="text-xs">Happy</div>
+                </div>
+                <div class="bg-white px-3 py-2 rounded-lg shadow-md text-center">
+                    <div id="level" class="text-purple-600 text-lg">1</div>
+                    <div class="text-xs">Level</div>
+                </div>
+                <div class="bg-white px-3 py-2 rounded-lg shadow-md text-center">
+                    <div id="combo" class="text-orange-600 text-lg">0</div>
+                    <div class="text-xs">Combo</div>
+                </div>
+            </div>
+
+            <!-- Power-up Indicator -->
+            <div id="powerup-indicator" class="bg-yellow-400 px-4 py-2 rounded-lg mb-4 shadow-lg animate-pulse" style="display: none;">
+                <div id="powerup-text" class="text-center font-bold">Power-up Active!</div>
+                <div class="w-full bg-yellow-200 rounded-full h-2 mt-1">
+                    <div id="powerup-timer" class="bg-yellow-600 h-2 rounded-full transition-all duration-100" style="width: 100%;"></div>
+                </div>
+            </div>
+
+            <!-- Game Canvas -->
+            <div class="relative">
+                <canvas id="game-canvas" 
+                        width="400" 
+                        height="500" 
+                        class="bg-gradient-to-b from-blue-100 to-green-100 border-4 border-purple-400 rounded-xl shadow-xl cursor-none">
+                    Your browser doesn't support HTML5 Canvas!
+                </canvas>
+                
+                <!-- Game Over Overlay -->
+                <div id="game-over" class="absolute inset-0 bg-black bg-opacity-80 flex items-center justify-center rounded-xl" style="display: none;">
+                    <div class="bg-white p-8 rounded-2xl text-center shadow-2xl max-w-sm">
+                        <div id="game-over-pet" class="text-6xl mb-4">😿</div>
+                        <h2 class="text-3xl font-bold text-red-600 mb-4">Game Over!</h2>
+                        <div class="space-y-2 mb-6 text-lg">
+                            <p><strong>Score:</strong> <span id="final-score">0</span></p>
+                            <p><strong>Level:</strong> <span id="final-level">1</span></p>
+                            <p><strong>Max Combo:</strong> <span id="final-combo">0</span></p>
+                            <p><strong>Treats Fed:</strong> <span id="final-treats">0</span></p>
+                            <p id="new-high-score" class="text-green-600 font-bold" style="display: none;">🎉 NEW HIGH SCORE! 🎉</p>
+                        </div>
+                        <button id="restart-game" class="bg-purple-500 hover:bg-purple-600 text-white px-8 py-3 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+                            🏠 Back to Menu
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Controls -->
+            <div class="mt-6 text-center">
+                <button id="pause-game" class="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg mb-4" style="display: none;">
+                    ⏸️ Pause
+                </button>
+                
+                <div class="text-gray-700 text-sm space-y-1">
+                    <p>🎮 Use ← → arrow keys or mouse to move</p>
+                    <p>🍎 Catch treats • ⚡ Collect power-ups • 💣 Avoid bombs</p>
+                    <p>🏆 Build combos for bonus points!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
